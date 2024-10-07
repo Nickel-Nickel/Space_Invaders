@@ -24,7 +24,7 @@ class BarrierPiece(Sprite):
         self.health = len(BarrierPiece.health_colors) - 1
 
     def hit(self):
-        print('BarrierPiece hit!')
+        # print('BarrierPiece hit!')
         if self.health > 0: 
             self.health -= 1
         if self.health == 0: self.kill()

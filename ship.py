@@ -65,6 +65,7 @@ class Ship(Sprite):
         if self.fired % self.settings.ship_fire_every != 0: return
         laser = Laser(self.ai_game) 
         self.lasers.add(laser)
+        print(f'{self.fired/30} fired! {self.fired} is your number!')
         
     def open_fire(self): self.firing = True 
 

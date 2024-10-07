@@ -11,6 +11,7 @@ from scoreboard import Scoreboard
 from event import Event
 from barrier import Barriers
 from sound import Sound
+from UFOspawner import UFOSpawner
 
 
 class AlienInvasion:
@@ -28,6 +29,7 @@ class AlienInvasion:
         self.ship.set_fleet(self.fleet)
         self.ship.set_sb(self.sb)
         self.barriers = Barriers(ai_game=self)
+        self.UFOSpawner = UFOSpawner(ai_game=self)
 
         pg.display.set_caption("Alien Invasion")
         self.bg_color = self.settings.bg_color
@@ -74,6 +76,7 @@ class AlienInvasion:
                 self.fleet.update()
                 self.sb.show_score()
                 self.barriers.update()
+                self.UFOSpawner.update()
 
             if not self.game_active:
                 self.play_button.draw_button()

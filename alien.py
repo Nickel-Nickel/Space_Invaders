@@ -46,7 +46,7 @@ class Alien(Sprite):
         return self.x + self.rect.width >= sr.right or self.x <= 0
 
     def update(self):
-        if self.is_dying != True and  self.is_dead != True:
+        if not self.is_dying and not self.is_dead:
             self.x += self.v.x
             self.y += self.v.y
         self.image = self.timer.current_image()
