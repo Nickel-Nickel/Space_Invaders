@@ -54,10 +54,11 @@ class UFOSpawner(Sprite):
 
         if collisions:
             for UFOs in collisions.values():
+                self.random_points = randint(0,4)
                 for ufo in UFOs:
-                    ufo.image = ufo.ufo_explosion
+                    ufo.image = ufo.ufo_explosions[self.random_points]
                     ufo.is_dying = True
-                self.stats.score += self.settings.UFO_points[randint(0,4)]
+                self.stats.score += self.settings.UFO_points[self.random_points]
                 self.sound.play_deathsound()
             self.sb.prep_score()
             self.sb.check_high_score()
@@ -66,7 +67,7 @@ class UFOSpawner(Sprite):
             ufo.update()
             if (ufo.is_dead) or (ufo.x > self.screen.get_width() + ufo.rect.width) or (ufo.x < 2 * -ufo.rect.width):
                         self.UFOs.remove(ufo)
-                        self.spawn_delay = randint(600,1500)
+                        self.spawn_delay = randint(600,1020)
 
         if not self.UFOs:
             self.create_UFO()

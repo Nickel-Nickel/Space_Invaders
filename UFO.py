@@ -8,7 +8,7 @@ from random import randint
 
 class UFO(Sprite):
     ufo_image = pg.image.load("images/ufo.png")
-    ufo_explosion = pg.image.load("images/ufo-explosion.png")
+    ufo_explosions = [pg.image.load("images/ufo-50.png"),pg.image.load("images/ufo-100.png"),pg.image.load("images/ufo-150.png"),pg.image.load("images/ufo-200.png"),pg.image.load("images/ufo-300.png"),]
 
     def __init__(self, ai_game,v): 
         super().__init__()
@@ -52,9 +52,9 @@ class UFO(Sprite):
             self.x = self.x + self.v.x
 
         if self.is_dying:
-            self.image = self.ufo_explosion
+            #self.image = self.ufo_explosion
             self.death_timer += 1
-            if self.death_timer >= 15:
+            if self.death_timer >= 30:
                 self.is_dead = True
 
         self.draw()

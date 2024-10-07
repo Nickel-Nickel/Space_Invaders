@@ -53,7 +53,7 @@ class Alien(Sprite):
         if self.is_dying:
             self.image = self.alien_explosion
             self.death_timer += 1
-            if self.death_timer >= 15:
+            if self.death_timer >= 20:
                 self.is_dead = True
         self.draw()
         
