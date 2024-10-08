@@ -13,7 +13,7 @@ class BarrierPiece(Sprite):
                      #4: pg.Color(0, 0, 255),
                      #3: pg.Color(255, 255, 0),
                      #2: pg.Color(255, 128, 0),
-                     1: pg.Color(255, 0, 0),
+                     1: pg.Color(0, 165, 20),
                      0: pg.Color(0, 0, 0)}
 
     def __init__(self, ai_game, rect):
@@ -50,7 +50,7 @@ class Barrier(Sprite):    # not a real Barrier class -- should be made up of man
         self.settings = ai_game.settings
         self.ship_lasers = ai_game.ship.lasers
         self.fleet = ai_game.fleet
-        self.fleet_lasers = ai_game.fleet.fleet_lasers
+        self.fleet_lasers = ai_game.fleet.lasers
         self.barrier_pieces = Group()
         self.create_barrier_pieces()
 
@@ -77,10 +77,12 @@ class Barrier(Sprite):    # not a real Barrier class -- should be made up of man
     def is_dead(self): return self.health == 0
 
     def update(self): 
-        collisions = pg.sprite.groupcollide(self.barrier_pieces, self.ship_lasers, False, True)
-        for c in collisions:
+        ship_collisions = pg.sprite.groupcollide(self.barrier_pieces, self.ship_lasers, False, True)
+        for c in ship_collisions:
             c.hit()
-        # _ = pg.sprite.groupcollide(self.barrier_pieces, self.fleet_lasers, True, True)
+        alien_collisions = pg.sprite.groupcollide(self.barrier_pieces, self.fleet_lasers, False, True)
+        for c in alien_collisions:
+            c.hit()
         self.draw()
 
     def draw(self):

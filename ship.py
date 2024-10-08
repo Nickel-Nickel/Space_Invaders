@@ -15,7 +15,10 @@ class Ship(Sprite):
         self.settings = ai_game.settings
         self.sb = None
 
-        self.image = pg.image.load('images/ship.png')
+        self.normal_ship = pg.image.load('images/ship.png')
+        self.death_frames = [pg.image.load('images/ship-explosion-1.png'),pg.image.load('images/ship-explosion-2.png')]
+        self.image = self.normal_ship
+
         self.rect = self.image.get_rect()
         self.rect.midbottom = self.screen_rect.midbottom
         scr_r = self.screen_rect 
@@ -27,11 +30,17 @@ class Ship(Sprite):
         self.fleet = None
         self.fired = 0
 
+        self.is_dying = False
+        self.death_timer = 0
+        self.current_frame = 0
+        self.frame_length = 10
+
     def set_fleet(self, fleet): self.fleet = fleet 
 
     def set_sb(self, sb): self.sb = sb
 
     def reset_ship(self):
+        self.image = self.normal_ship
         self.lasers.empty()
         self.center_ship()
 
@@ -52,18 +61,26 @@ class Ship(Sprite):
         if self.stats.ships_left <= 0:
             self.ai_game.game_over()
 
-        self.lasers.empty()
-        self.fleet.aliens.empty()
+        self.is_dying = True
+        self.death_timer = 0
 
-        self.center_ship()
-        self.fleet.create_fleet()
+    def death_animation(self):
+        if self.is_dying:
+            if self.death_timer % self.frame_length == 0:
+                self.current_frame = (self.current_frame + 1) % 2
+                self.image = self.death_frames[self.current_frame]
+            self.death_timer += 1
 
-        sleep(0.5) 
+            if self.death_timer >= 10 * self.frame_length:
+                self.is_dying = False
+                self.reset_ship()
+                self.fleet.aliens.empty()
+                self.fleet.create_fleet()
 
     def fire_laser(self):
         self.fired += 1
         if self.fired % self.settings.ship_fire_every != 0: return
-        laser = Laser(self.ai_game, False) 
+        laser = Laser(self.ai_game, self, False) 
         self.lasers.add(laser)
         # print(f'{self.fired/30} fired! {self.fired} is your number!')
         
@@ -72,11 +89,19 @@ class Ship(Sprite):
     def cease_fire(self): self.firing = False
 
     def update(self):
-        self.x += self.v.x 
-        self.y += self.v.y
-        self.bound()
-        if self.firing:
-            self.fire_laser()
+        collisions = pg.sprite.spritecollide(self, self.fleet.lasers, True)
+        if collisions and not self.is_dying:
+            self.ship_hit()
+
+        if self.is_dying:
+            self.death_animation()
+        else:
+            self.x += self.v.x 
+            self.y += self.v.y
+            self.bound()
+            if self.firing:
+                self.fire_laser()
+
         self.lasers.update()
         for laser in self.lasers.copy():
             if laser.rect.bottom <= 0:

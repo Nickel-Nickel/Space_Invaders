@@ -5,6 +5,7 @@ from laser import Laser
 from sound import Sound
 from alien import Alien
 from pygame.sprite import Sprite
+from random import randint
 
 class Fleet(Sprite):
     def __init__(self, ai_game): 
@@ -23,6 +24,9 @@ class Fleet(Sprite):
         self.create_fleet()
         # self.create_row()
         self.sound = Sound()
+        self.lasers = pg.sprite.Group()
+        self.laser_timer = 0
+        self.laser_rate = 60
 
     def reset_fleet(self):
         self.aliens.empty()
@@ -61,6 +65,29 @@ class Fleet(Sprite):
                 self.ship.ship_hit()
                 return True
         return False
+    
+    def fire_laser(self):
+        if self.laser_timer >= self.laser_rate:
+            aliens_left = int(len(self.aliens))-1
+            target = randint(0,aliens_left)
+            index = 0
+            for alien in self.aliens:
+                if index == target:
+                    laser = Laser(self.ai_game, alien, True) 
+                    self.lasers.add(laser)
+                    self.laser_timer = 0
+                    self.laser_rate = randint(int((-aliens_left/2 + 71)),int((-aliens_left/2 + 98)))   
+                    # Decreases rate of fire with fewer aliens
+                index += 1
+        else:
+            self.laser_timer += 1
+
+        self.lasers.update()
+        for laser in self.lasers.copy():
+            if laser.rect.bottom <= 0:
+                self.lasers.remove(laser)
+        for laser in self.lasers.sprites():
+            laser.draw() 
 
     def update(self): 
         collisions = pg.sprite.groupcollide(self.ship.lasers, self.aliens, True, False)
@@ -72,7 +99,6 @@ class Fleet(Sprite):
                     alien.image = alien.alien_explosion
                     alien.is_dying = True
                     self.stats.score += alien.point_value
-                # self.sound.play_deathsound()
             self.sb.prep_score()
             self.sb.check_high_score()
 
@@ -101,6 +127,8 @@ class Fleet(Sprite):
             alien.update()
             if alien.is_dead:
                         self.aliens.remove(alien)
+
+        self.fire_laser()
 
     def draw(self): pass
         # for alien in self.aliens:

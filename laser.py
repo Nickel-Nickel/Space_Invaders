@@ -8,21 +8,29 @@ class Laser(Sprite):
     ship_missile = pg.image.load("images/laser-reg.png")
     alien_missile = pg.image.load("images/laser-alien.png")
 
-    def __init__(self, ai_game, is_alien = False):
+    def __init__(self, ai_game, source, is_alien = False):
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
-        # self.color = self.settings.laser_color
-        if not is_alien:
+        self.source = source
+        self.is_alien = is_alien
+
+        if not self.is_alien:
             self.image = self.ship_missile
+            self.rect = self.image.get_rect()
+            self.rect.midtop = ai_game.ship.rect.midtop
         else:
             self.image = self.alien_missile
-        self.rect = self.image.get_rect()
-        self.rect.midtop = ai_game.ship.rect.midtop
+            self.rect = self.image.get_rect()
+            self.rect.midtop = self.source.rect.midbottom
+            
         self.y = float(self.rect.y)
 
     def update(self):
-        self.y -= self.settings.laser_speed
+        if not self.is_alien:
+            self.y -= self.settings.ship_laser_speed
+        else:
+            self.y += self.settings.alien_laser_speed
         self.rect.y = self.y
 
     def draw(self):
