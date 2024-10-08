@@ -30,6 +30,7 @@ class UFOSpawner(Sprite):
         self.create_UFO()
 
     def create_UFO(self):
+        self.v = Vector(self.settings.ufo_speed, 0)
         if self.spawn_timer < self.spawn_delay:
              self.spawn_timer += 1
              return
@@ -37,6 +38,9 @@ class UFOSpawner(Sprite):
         rng = randint(1,2)
         if rng == 2:             # spawn right, move left
             self.v = -self.v
+            print('Spawning from right!')
+        else:
+             print('Spawning from left!')
         
         ufo = UFO(ai_game=self.ai_game, v=self.v)
         self.UFOs.add(ufo)
@@ -54,18 +58,21 @@ class UFOSpawner(Sprite):
 
         if collisions:
             for UFOs in collisions.values():
-                self.random_points = randint(0,4)
                 for ufo in UFOs:
+                    if not ufo.is_dying:
+                         self.point_value = randint(0,4)
+                         ufo.image = ufo.ufo_explosions[self.point_value]
                     ufo.sound.hover.stop()
-                    ufo.image = ufo.ufo_explosions[self.random_points]
                     ufo.is_dying = True
-                self.stats.score += self.settings.UFO_points[self.random_points]
+                self.stats.score += self.settings.UFO_points[self.point_value]
+                self.point_value = 5                # sets to 0 points after initial hit
                 self.sound.play_deathsound()
             self.sb.prep_score()
             self.sb.check_high_score()
 
         for ufo in self.UFOs:
             ufo.update()
+            print(f'Ufo position: {ufo.x}; Screen Width: {self.screen.get_width()}; UFO Width: {ufo.rect.width}')
             if (ufo.is_dead) or (ufo.x > self.screen.get_width() + ufo.rect.width) or (ufo.x < 2 * -ufo.rect.width):
                         ufo.sound.hover.stop()
                         self.UFOs.remove(ufo)

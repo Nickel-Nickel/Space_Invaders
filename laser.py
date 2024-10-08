@@ -3,17 +3,21 @@ from pygame.sprite import Sprite
 from random import randint
 
 class Laser(Sprite):
-    @staticmethod
-    def random_color(): 
-        return (randint(0, 255), randint(0, 255), randint(0, 255))
-    def __init__(self, ai_game):
+
+
+    ship_missile = pg.image.load("images/laser-reg.png")
+    alien_missile = pg.image.load("images/laser-alien.png")
+
+    def __init__(self, ai_game, is_alien = False):
         super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         # self.color = self.settings.laser_color
-        self.color = Laser.random_color()
-        self.rect = pg.Rect(0, 0, self.settings.laser_width,
-                                self.settings.laser_height)
+        if not is_alien:
+            self.image = self.ship_missile
+        else:
+            self.image = self.alien_missile
+        self.rect = self.image.get_rect()
         self.rect.midtop = ai_game.ship.rect.midtop
         self.y = float(self.rect.y)
 
@@ -22,7 +26,7 @@ class Laser(Sprite):
         self.rect.y = self.y
 
     def draw(self):
-        pg.draw.rect(self.screen, self.color, self.rect)
+        self.screen.blit(self.image, self.rect)
 
 def main():
     print("\nYou have to run from alien_invasion.py\n")
