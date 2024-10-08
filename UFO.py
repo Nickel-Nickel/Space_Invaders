@@ -19,7 +19,7 @@ class UFO(Sprite):
         self.stats = ai_game.stats
         self.sb = ai_game.sb
         self.v = v
-
+        self.sound = ai_game.sound
 
         self.image = self.ufo_image
         self.rect = self.image.get_rect()
@@ -37,6 +37,9 @@ class UFO(Sprite):
         self.spawn_timer = randint(15,45)
         self.time_since_last_spawn = 0
 
+        self.sound.play_ufo()
+        
+
     def update(self):
         
         if not self.is_spawned:
@@ -52,9 +55,10 @@ class UFO(Sprite):
             self.x = self.x + self.v.x
 
         if self.is_dying:
+            self.sound.hover.stop()
             #self.image = self.ufo_explosion
             self.death_timer += 1
-            if self.death_timer >= 30:
+            if self.death_timer >= 45:
                 self.is_dead = True
 
         self.draw()

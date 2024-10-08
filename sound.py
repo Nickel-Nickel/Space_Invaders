@@ -20,9 +20,13 @@ class Sound:
         self.stop = pg.mixer.Sound('sounds/Death_Sounds/stop.mp3')
         self.wilhelm = pg.mixer.Sound('sounds/Death_Sounds/wilhelm.mp3')
         self.yeouch = pg.mixer.Sound('sounds/Death_Sounds/yeouch.mp3')
+        self.hover = pg.mixer.Sound('sounds/UFO-hover.mp3')
 
         pg.mixer.music.load('sounds/ride_of_the_valkyries.mp3')
         pg.mixer.music.set_volume(0.1)
+        
+
+        
                                              
     def play_background(self): 
         pg.mixer.music.play(-1, 0.0)
@@ -30,6 +34,9 @@ class Sound:
         
     def play_pickup(self): 
         if self.music_playing: self.pickup.play()
+
+    def play_ufo(self):
+        self.hover.play()
     
     def play_deathsound(self):
         randline = randint(1,1000)

@@ -68,10 +68,11 @@ class Fleet(Sprite):
         if collisions:
             for aliens in collisions.values():
                 for alien in aliens:
+                    self.sound.play_deathsound()
                     alien.image = alien.alien_explosion
                     alien.is_dying = True
-                self.stats.score += self.settings.alien_points * len(aliens)
-                self.sound.play_deathsound()
+                    self.stats.score += alien.point_value
+                # self.sound.play_deathsound()
             self.sb.prep_score()
             self.sb.check_high_score()
 

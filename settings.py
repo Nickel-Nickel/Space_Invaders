@@ -28,7 +28,9 @@ class Settings:
         self.alien_speed = 1.0
         self.ufo_speed = 3.0
 
-        self.alien_points = 50
+        self.alien1_points = 10
+        self.alien2_points = 20
+        self.alien3_points = 40
         self.UFO_points = [50,100,150,200,300]
 
     def increase_speed(self):
