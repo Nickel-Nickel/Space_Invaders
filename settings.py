@@ -11,7 +11,6 @@ class Settings:
         self.laser_speed = 3.0
         self.laser_width = 10
         self.laser_height = 15
-        self.laser_color = RED
 
         self.ship_limit = 3
         self.ship_fire_every = 30

@@ -76,7 +76,7 @@ class Fleet(Sprite):
                     laser = Laser(self.ai_game, alien, True) 
                     self.lasers.add(laser)
                     self.laser_timer = 0
-                    self.laser_rate = randint(int((-aliens_left/2 + 71)),int((-aliens_left/2 + 98)))   
+                    self.laser_rate = randint(int((-aliens_left/1.5 + 65)),int((-aliens_left/2 + 91)))   
                     # Decreases rate of fire with fewer aliens
                 index += 1
         else:
@@ -109,7 +109,7 @@ class Fleet(Sprite):
             self.stats.level += 1
             self.sb.prep_level()
             return
-        if pg.sprite.spritecollideany(self.ship, self.aliens):
+        if pg.sprite.spritecollideany(self.ship, self.aliens) and not self.ship.is_dying:
             print("Ship hit!")
             self.ship.ship_hit()
             return
