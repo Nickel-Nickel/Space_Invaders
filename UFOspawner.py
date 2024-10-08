@@ -72,7 +72,6 @@ class UFOSpawner(Sprite):
 
         for ufo in self.UFOs:
             ufo.update()
-            print(f'Ufo position: {ufo.x}; Screen Width: {self.screen.get_width()}; UFO Width: {ufo.rect.width}')
             if (ufo.is_dead) or (ufo.x > self.screen.get_width() + ufo.rect.width) or (ufo.x < 2 * -ufo.rect.width):
                         ufo.sound.hover.stop()
                         self.UFOs.remove(ufo)

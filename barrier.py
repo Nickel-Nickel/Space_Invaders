@@ -8,11 +8,11 @@ BARRIER_ARCH_WIDTH_2 = 4
 class BarrierPiece(Sprite):
     color = 255, 0, 0
     black = 0, 0, 0
-    health_colors = {6: pg.Color(0, 255, 0),
-                     5: pg.Color(0, 128, 255),
-                     4: pg.Color(0, 0, 255),
-                     3: pg.Color(255, 255, 0),
-                     2: pg.Color(255, 128, 0),
+    health_colors = {2: pg.Color(0, 255, 0),
+                     #5: pg.Color(0, 128, 255),
+                     #4: pg.Color(0, 0, 255),
+                     #3: pg.Color(255, 255, 0),
+                     #2: pg.Color(255, 128, 0),
                      1: pg.Color(255, 0, 0),
                      0: pg.Color(0, 0, 0)}
 
