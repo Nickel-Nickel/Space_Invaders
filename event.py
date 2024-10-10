@@ -4,9 +4,9 @@ from vector import Vector
 
 class Event:
     di = {pg.K_RIGHT: Vector(1, 0), pg.K_LEFT: Vector(-1, 0),
-      # pg.K_UP: Vector(0, -1), pg.K_DOWN: Vector(0, 1),
+      pg.K_UP: Vector(0, -1), pg.K_DOWN: Vector(0, 1),
       pg.K_d: Vector(1, 0), pg.K_a: Vector(-1, 0),
-      # pg.K_w: Vector(0, -1), pg.K_s: Vector(0, 1)
+      pg.K_w: Vector(0, -1), pg.K_s: Vector(0, 1)
       }
 
     def __init__(self, ai_game):

@@ -25,7 +25,7 @@ class Alien(Sprite):
         self.point_value = (2 ** type) * 10
        
         self.image = self.timer.current_image()
-        print(self.image)
+        #print(self.image)
         self.rect = self.image.get_rect()
 
         self.rect.x = self.rect.width

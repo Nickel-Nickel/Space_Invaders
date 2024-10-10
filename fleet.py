@@ -91,7 +91,7 @@ class Fleet(Sprite):
             laser.draw() 
 
     def update(self): 
-        collisions = pg.sprite.groupcollide(self.ship.lasers, self.aliens, True, False)
+        collisions = pg.sprite.groupcollide(self.ship.lasers, self.aliens, True, False,)
 
         if collisions:
             for aliens in collisions.values():
@@ -102,13 +102,6 @@ class Fleet(Sprite):
                     self.stats.score += alien.point_value
             self.sb.prep_score()
             self.sb.check_high_score()
-            print(f'Pre-Increase Speed: {self.settings.alien_speed}')
-            #self.settings.alien_speed += .1
-            print(f'Post-Increase Speed: {self.settings.alien_speed}')
-            #if self.v.x > 0:
-            #    self.v.x += .05
-            #else:
-            #    self.v.x -= .05
             self.v.x = self.v.x * 1.035
             for alien in self.aliens:
                 alien.v.x = self.v.x

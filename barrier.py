@@ -6,22 +6,17 @@ BARRIER_ARCH_HEIGHT = 4
 BARRIER_ARCH_WIDTH_2 = 4
 
 class BarrierPiece(Sprite):
-    color = 255, 0, 0
-    black = 0, 0, 0
-    health_colors = {2: pg.Color(0, 255, 0),
-                     #5: pg.Color(0, 128, 255),
-                     #4: pg.Color(0, 0, 255),
-                     #3: pg.Color(255, 255, 0),
-                     #2: pg.Color(255, 128, 0),
-                     1: pg.Color(0, 165, 20),
-                     0: pg.Color(0, 0, 0)}
+    health_sprites = {3: pg.image.load("images/barrier-1.png"),
+                     2: pg.image.load("images/barrier-2.png"),
+                     1: pg.image.load("images/barrier-3.png"),
+                     0: pg.image.load("images/barrier-3.png")}
 
     def __init__(self, ai_game, rect):
         super().__init__()
         self.ai_game = ai_game
         self.screen = ai_game.screen
         self.rect = rect
-        self.health = len(BarrierPiece.health_colors) - 1
+        self.health = len(BarrierPiece.health_sprites) - 1
 
     def hit(self):
         # print('BarrierPiece hit!')
@@ -32,9 +27,8 @@ class BarrierPiece(Sprite):
     def update(self): pass
 
     def draw(self):
-        pg.draw.rect(self.screen, BarrierPiece.health_colors[self.health], self.rect)
-        # pg.draw.rect(self.screen, pg.Color(0, 255, 0), self.rect)
-
+        sprite = BarrierPiece.health_sprites[self.health]
+        self.screen.blit(sprite, self.rect)
 
 class Barrier(Sprite):    # not a real Barrier class -- should be made up of many tiny Sprites
                           # you will not get credit for this class unless it is updated to tiny Sprites
@@ -108,7 +102,7 @@ class Barriers:
                 
         barriers = [Barrier(ai_game=self.ai_game, 
                             width=BARRIER_WIDTH, height=BARRIER_HEIGHT, 
-                            deltax=10, deltay=10,                            # smaller is smaller piedes
+                            deltax=12, deltay=12,                            # smaller is smaller piedes
                             # deltax=20, deltay=20, 
                             x=x, y=y) for x, y in Barriers.positions]
         for barrier in barriers:
