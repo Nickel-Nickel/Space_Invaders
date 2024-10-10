@@ -33,6 +33,7 @@ class Fleet(Sprite):
         self.create_fleet()
 
     def create_fleet(self):
+        self.v = Vector(self.settings.alien_speed, 0)
         alien = Alien(ai_game=self.ai_game, v=self.v)
         alien_height = alien.rect.height
         current_y = alien_height
@@ -96,11 +97,22 @@ class Fleet(Sprite):
             for aliens in collisions.values():
                 for alien in aliens:
                     self.sound.play_deathsound()
-                    alien.image = alien.alien_explosion
+                    #alien.image = alien.alien_explosion
                     alien.is_dying = True
                     self.stats.score += alien.point_value
             self.sb.prep_score()
             self.sb.check_high_score()
+            print(f'Pre-Increase Speed: {self.settings.alien_speed}')
+            #self.settings.alien_speed += .1
+            print(f'Post-Increase Speed: {self.settings.alien_speed}')
+            #if self.v.x > 0:
+            #    self.v.x += .05
+            #else:
+            #    self.v.x -= .05
+            self.v.x = self.v.x * 1.035
+            for alien in self.aliens:
+                alien.v.x = self.v.x
+
 
         if not self.aliens:
             self.ship.lasers.empty()
