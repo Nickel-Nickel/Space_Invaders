@@ -38,9 +38,6 @@ class UFOSpawner(Sprite):
         rng = randint(1,2)
         if rng == 2:             # spawn right, move left
             self.v = -self.v
-            print('Spawning from right!')
-        else:
-             print('Spawning from left!')
         
         ufo = UFO(ai_game=self.ai_game, v=self.v)
         self.UFOs.add(ufo)

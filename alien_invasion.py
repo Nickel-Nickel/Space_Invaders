@@ -12,7 +12,7 @@ from event import Event
 from barrier import Barriers
 from sound import Sound
 from UFOspawner import UFOSpawner
-
+from screens import Screens
 
 class AlienInvasion:
     def __init__(self):
@@ -24,6 +24,7 @@ class AlienInvasion:
         self.sb = Scoreboard(self)
         self.sound = Sound()
 
+        self.screens = Screens(ai_game=self)
         self.ship = Ship(ai_game=self)
         self.fleet = Fleet(ai_game=self)
         self.ship.set_fleet(self.fleet)
@@ -35,22 +36,27 @@ class AlienInvasion:
         self.bg_color = self.settings.bg_color
 
         # Start Alien Invasion in an inactive state.
+        self.game_state = "Start"
+        print("State: Start      Source: Init")
         self.game_active = False
         self.first = True
 
-        self.play_button = Button(self, "Play")
         self.event = Event(self)
 
     def game_over(self):
-        # self.restart_game()
-        print("Game over!") 
         self.sound.play_gameover()
-        sys.exit()
+        self.game_state = "Restart"
+        print("State: Restart      Source: Death")
+        self.restart_game()
+        # print("Game over!") 
+        # self.sound.play_gameover()
+        # sys.exit()
 
     def reset_game(self):
         self.stats.reset_stats()
         self.sb.prep_score_level_ships()
         self.game_active = True
+        self.first = False
         self.sound.play_background()
 
         self.ship.reset_ship()
@@ -58,18 +64,24 @@ class AlienInvasion:
         pg.mouse.set_visible(False)
 
     def restart_game(self):
+        #self.game_state = "Restart"
         self.game_active = False
-        self.first = True
-        self.play_button.reset_message("Play again? (q for quit)")
-        self.reset_game()
+        # self.first = True
+        pg.mouse.set_visible(True)
+        #self.screens.display_restart()
+        #pg.display.flip()
+        self.event.check_events()
 
     def run_game(self):
         self.finished = False
         self.first = True
         self.game_active = False
+        self.game_state = "Start"
+        print("State: Start      Source: Bootup")
+
         while not self.finished:
             self.finished = self.event.check_events()
-            if self.first or self.game_active:
+            if  self.game_state == "Game":
                 self.first = False
                 self.screen.fill(self.bg_color)
                 self.ship.update()
@@ -77,9 +89,13 @@ class AlienInvasion:
                 self.sb.show_score()
                 self.barriers.update()
                 self.UFOSpawner.update()
+            elif self.game_state == "Start":
+                self.screen.fill(self.bg_color)
+                self.screens.display_start()
+            elif self.game_state == "Restart":
+                self.screen.fill(self.bg_color)
+                self.screens.display_restart()
 
-            if not self.game_active:
-                self.play_button.draw_button()
             pg.display.flip()
 
             self.clock.tick(60)

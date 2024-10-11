@@ -1,6 +1,7 @@
 import pygame as pg
 import sys 
 from vector import Vector 
+from screens import Screens
 
 class Event:
     di = {pg.K_RIGHT: Vector(1, 0), pg.K_LEFT: Vector(-1, 0),
@@ -13,10 +14,13 @@ class Event:
         self.ai_game = ai_game 
         self.settings = ai_game.settings
         self.stats = ai_game.stats
-        self.sb = ai_game.sb 
-        self.game_active = ai_game.game_active
+        self.sb = ai_game.sb
         self.ship = ai_game.ship
-        self.play_button = ai_game.play_button
+        self.screens = ai_game.screens
+        self.play_button = self.screens.play_button
+        self.highscores_button = self.screens.highscores_button
+        self.menu_button = self.screens.menu_button
+        self.quit_button = self.screens.quit_button
 
     def check_events(self):
         for event in pg.event.get():
@@ -30,12 +34,37 @@ class Event:
             elif event.type == pg.MOUSEBUTTONDOWN:
                 mouse_pos = pg.mouse.get_pos()
                 self._check_play_button(mouse_pos)
+                self.check_highscores_button(mouse_pos)
+                self.check_menu_button(mouse_pos)
+                self.check_quit_button(mouse_pos)
 
     def _check_play_button(self, mouse_pos):
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
-        if button_clicked and not self.game_active:
+        if button_clicked and (self.ai_game.game_state == "Restart" or self.ai_game.game_state == "Start"):
             self.settings.initialize_dynamic_settings()
+            self.ai_game.game_state = "Game"
+            print("State: Game      Source: Play")
             self.ai_game.reset_game()
+    
+    def check_highscores_button(self, mouse_pos):
+        button_clicked = self.highscores_button.rect.collidepoint(mouse_pos)
+        if button_clicked and self.ai_game.game_state == "Start":
+            print("Pressed Highscores!")
+            sys.exit()
+    
+    def check_menu_button(self, mouse_pos):
+        button_clicked = self.menu_button.rect.collidepoint(mouse_pos)
+        if button_clicked and self.ai_game.game_state == "Restart":
+            print("Pressed Menu!")
+            self.ai_game.game_state = "Start"
+            print("State: Start      Source: Menu")
+            #sys.exit()
+    
+    def check_quit_button(self, mouse_pos):
+        button_clicked = self.quit_button.rect.collidepoint(mouse_pos)
+        if button_clicked and self.ai_game.game_state == "Start":
+            print("Pressed Quit!")
+            sys.exit()
 
     def _check_keydown_events(self, event):
         key = event.key
