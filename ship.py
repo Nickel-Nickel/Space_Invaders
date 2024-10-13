@@ -58,8 +58,6 @@ class Ship(Sprite):
         self.stats.ships_left -= 1
         print(f"Only {self.stats.ships_left} ships left now")
         self.sb.prep_ships()
-        if self.stats.ships_left <= 0:
-            self.ai_game.game_over()
 
         self.is_dying = True
         self.death_timer = 0
@@ -73,6 +71,8 @@ class Ship(Sprite):
 
             if self.death_timer >= 10 * self.frame_length:
                 self.is_dying = False
+                if self.stats.ships_left <= 0:
+                    self.ai_game.game_over()
                 self.reset_ship()
                 self.fleet.aliens.empty()
                 self.fleet.create_fleet()

@@ -6,7 +6,7 @@ from random import randint
 class Sound:
     def __init__(self): 
         self.pickup = pg.mixer.Sound('sounds/pickup.wav')
-        self.gameover = pg.mixer.Sound('sounds/gameover.wav')
+        self.gameover = pg.mixer.Sound('sounds/kirby_death.wav')
 
         self.ah = pg.mixer.Sound('sounds/Death_Sounds/ah.mp3')
         self.aliendeath = pg.mixer.Sound('sounds/Death_Sounds/aliendeath.mp3')

@@ -8,6 +8,7 @@ This code is based off of the code provided by Professor McCarthy via the class 
 Additionally, credit for game_stats.py also goes to Professor McCarthy for the code provided on October 6th.
 
 The UFO hover sound effect is from Sound Effect Database on YouTube (https://www.youtube.com/watch?v=5zJSXO3wQkY)
-All other sound effects were created by the group's members.
+The game over sound effect is the death noise from Nintendo's Kirby Super Star Ultra
+Background music is Richard Wagner's Ride of the Valkyries
 
 All sprites were created by group members using Piskel, based off of the original 1978 Space Invaders.
