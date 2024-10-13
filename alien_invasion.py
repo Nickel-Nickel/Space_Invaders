@@ -13,6 +13,7 @@ from barrier import Barriers
 from sound import Sound
 from UFOspawner import UFOSpawner
 from screens import Screens
+from highscores import Highscores
 
 class AlienInvasion:
     def __init__(self):
@@ -24,6 +25,7 @@ class AlienInvasion:
         self.sb = Scoreboard(self)
         self.sound = Sound()
 
+        self.highscores = Highscores(ai_game=self)
         self.screens = Screens(ai_game=self)
         self.ship = Ship(ai_game=self)
         self.fleet = Fleet(ai_game=self)
@@ -44,9 +46,11 @@ class AlienInvasion:
         self.event = Event(self)
 
     def game_over(self):
+        self.stats.update_high_scores(self.stats.score)
         self.sound.play_gameover()
         self.game_state = "Restart"
-        print("State: Restart      Source: Death")
+        #print("State: Restart      Source: Death")
+        self.highscores.load_high_scores()
         self.restart_game()
         # print("Game over!") 
         # self.sound.play_gameover()
@@ -95,6 +99,8 @@ class AlienInvasion:
             elif self.game_state == "Restart":
                 self.screen.fill(self.bg_color)
                 self.screens.display_restart()
+            elif self.game_state == "Highscores":
+                self.screens.display_highscores()
 
             pg.display.flip()
 

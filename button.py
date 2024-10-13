@@ -21,9 +21,10 @@ class Button:
         self.msg = msg
         self._prep_msg(msg)
 
-    def reset_height(self, y):
-        self.y = y
-        self.rect.center = (self.screen_rect.center[0], self.y)
+    def reset_pos(self,x, y):
+        #self.x = x
+        #self.y = y
+        self.rect.center = (x, y)
 
     def _prep_msg(self, msg):
         self.msg_image = self.font.render(msg, True, self.text_color,

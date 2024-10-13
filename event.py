@@ -50,11 +50,12 @@ class Event:
         button_clicked = self.highscores_button.rect.collidepoint(mouse_pos)
         if button_clicked and self.ai_game.game_state == "Start":
             print("Pressed Highscores!")
-            sys.exit()
+            self.ai_game.game_state = "Highscores"
+            #sys.exit()
     
     def check_menu_button(self, mouse_pos):
         button_clicked = self.menu_button.rect.collidepoint(mouse_pos)
-        if button_clicked and self.ai_game.game_state == "Restart":
+        if button_clicked and (self.ai_game.game_state == "Restart" or self.ai_game.game_state == "Highscores"):
             print("Pressed Menu!")
             self.ai_game.game_state = "Start"
             print("State: Start      Source: Menu")
